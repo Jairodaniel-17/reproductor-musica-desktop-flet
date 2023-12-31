@@ -74,9 +74,16 @@ def obtener_duracion_cancion(ruta):
 
 def main(page: ft.Page):
     page.title = """Personal Songs 🎧❤️"""
+    # crear modal
+    dlg = ft.AlertDialog(
+        title=ft.Text(
+            "¡Se descargo la canción de forma exitosa!,\nreinicie la app\ncuando termine de descargar las canciones que desea!",
+            text_align=ft.TextAlign.CENTER,
+        )
+    )
     # campo input de entrada de texto
     entrada_texto = ft.TextField(
-        label="Ingrese la URL de la canción de Youtube",
+        label="Ingrese la URL, para descargar solo presione enter.",
         # on_change=lambda e: print(f"Cambiando texto...{e.control.value}"),
         on_submit=lambda e: download_mp3(e.control.value),
         on_focus=lambda _: limpiar_entrada_texto(),
@@ -125,9 +132,11 @@ def main(page: ft.Page):
             os.path.join(temp_path, f"{new_name}.jpg"),
             os.path.join(img_path, f"{new_name}.jpg"),
         )
-        entrada_texto.value = "Se descargó la canción exitosamente."
+        time.sleep(1)
+        # activar modal
+        dlg.open = True
+        page.dialog = dlg
         page.update()
-        time.sleep(4)
         limpiar_entrada_texto()
 
     def primera_cancion_en_existencia():
